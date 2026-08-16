@@ -29,9 +29,9 @@ def gen_markup(rows):
     markup.add(KeyboardButton(cancel_button))
     return markup
 
-attributes_of_projects = {'Имя проекта' : ["Введите новое имя проекта", "project_name"],
+attributes_of_projects = {'Имя проекта' : ["Введите новое имя пр", "project_name"],
                           "Описание" : ["Введите новое описание проекта", "description"],
-                          "Ссылка" : ["Введите новую ссылку проект", "url"],
+                          "Ссылка" : ["Введите новую ссылкуа проект", "url"],
                           "Статус" : ["Выберите новый статус задачи", "status_id"]}
 
 def info_project(message, user_id, project_name):
@@ -65,11 +65,13 @@ def info(message):
 /delete - используй для удаления своего проекта🗑️
 /update_projects - используй для изменнения своего проекта♻️
 /info - используй для вывода информации о командах🔎
-
+/count - используй для подсчитания своих проектов❕
 
 
 Также ты можешь ввести имя проекта и узнать информацию о нем!""")
     
+
+
 
 @bot.message_handler(commands=['new_project'])
 def addtask_command(message):
@@ -188,6 +190,15 @@ def delete_project(message, projects):
     manager.delete_project(user_id, project_id)
     bot.send_message(message.chat.id, f'Проект {project} удален!')
 
+@bot.message_handler(commands=['count'])
+def count_projects(message):
+    user_id = message.from_user.id
+    projects = manager.get_projects(user_id)
+
+    bot.send_message(
+        message.chat.id,
+        f"У тебя проектов: {len(projects)}"
+    )
 
 @bot.message_handler(commands=['update_projects'])
 def update_project(message):
